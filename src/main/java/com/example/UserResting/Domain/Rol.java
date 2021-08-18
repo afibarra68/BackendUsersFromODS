@@ -20,8 +20,6 @@ public class Rol {
     @Id
     private Integer id;
 
-    @NotEmpty(message = "Field Required")
-    @Column(unique = true, length = 45)
     private String rol;
 
 }

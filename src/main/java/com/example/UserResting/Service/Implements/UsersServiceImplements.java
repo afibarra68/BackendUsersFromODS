@@ -10,6 +10,8 @@ import com.example.UserResting.Service.error.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +32,9 @@ public class UsersServiceImplements implements IUserService {
 
     @Override
     public Page<UserDTO> read(Integer pageSize, Integer pageNumber) {
-        return null;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return userRepo.findAll(pageable)
+                .map(UserTransformer::getUsersDTOFromUsers);
     }
 
     @Override

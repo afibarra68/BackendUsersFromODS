@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -17,6 +16,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Users implements Serializable {
 
     @Id
@@ -30,13 +30,10 @@ public class Users implements Serializable {
     private String name;
 
     @NotNull
-    @NotEmpty(message = "Field Required")
     @Column(nullable = false)
     private Boolean active;
 
     @NotNull
-    @NotEmpty(message = "Field Required")
-    @JoinColumn(nullable = false)
     @ManyToOne
      private Rol rol;
 }

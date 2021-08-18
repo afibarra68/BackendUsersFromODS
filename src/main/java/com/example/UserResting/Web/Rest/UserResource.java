@@ -31,33 +31,26 @@ public class UserResource {
     public ResponseEntity<?> create(@Valid @RequestBody  UserDTO usersDTO, BindingResult result){
         UserDTO dto = null;
         Map<String, Object> response = new HashMap<>();
-
-            if (result.hasErrors()){
-                List<String> errors = result.getFieldErrors()
-                        .stream()
-                        .map(e -> "Error en el campo " + e.getField() + ": " + e.getDefaultMessage())
-                        .collect(Collectors.toList());
-                response.put("error", errors);
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
-            try{
-                dto = userService.create(usersDTO);
-
-            } catch (DataAccessException err) {
-
-                response.put("message", "user hasn't been saved");
-                response.put("Message Err", err.getMessage() + ": " +
-                        err.getMostSpecificCause().getMessage());
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-            response.put("message", "El usuario ha sido creada correctamente");
-            response.put("Usuario ", dto);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        if (result.hasErrors()){
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(e -> "Error en el campo " + e.getField() + ": " + e.getDefaultMessage())
+                    .collect(Collectors.toList());
+            response.put("error", errors);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }try
+        {
+            dto = userService.create(usersDTO);
+        } catch (DataAccessException err) {
+            response.put("message", "user hasn't been saved");
+            response.put("Message Err", err.getMessage() + ": " +
+                    err.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
-
+        response.put("message", "Has been created correctly");
+        response.put("New User", dto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
     @GetMapping("/user")
     public Page<UserDTO> read(@PathParam("pageSize") Integer pageSize,
                               @PathParam("pageNumber") Integer pageNumber) {
