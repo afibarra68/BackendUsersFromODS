@@ -2,7 +2,6 @@ package com.example.UserResting.Web.Rest;
 
 import com.example.UserResting.Service.Dto.UserDTO;
 import com.example.UserResting.Service.IUserService;
-import com.example.UserResting.Service.error.ObjectNotFoundException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class UserResource {
 
     @PostMapping("/user")
     public ResponseEntity<?> create(@Valid @RequestBody  UserDTO usersDTO, BindingResult result){
-        UserDTO dto = null;
+        UserDTO dto ;
         Map<String, Object> response = new HashMap<>();
         if (result.hasErrors()){
             List<String> errors = result.getFieldErrors()
@@ -66,4 +65,17 @@ public class UserResource {
     public ResponseEntity<UserDTO> getById(@PathVariable Integer idUser) {
         return new ResponseEntity<>(userService.getById(idUser), HttpStatus.OK);
     }
+
+    @GetMapping("/bin")
+    public Page<UserDTO> offsetsDataIUsers(@PathParam("username") String username,
+                                                         @PathParam(value = "pageSize") Integer pageSize,
+                                                         @PathParam(value = "pageNumber") Integer pageNumber) {
+        return userService.queryUsers(username, pageSize, pageNumber);
+    }
+
+    @DeleteMapping("/user/f297a57a5a/{id}")
+    public void deleteUser(@PathVariable Integer id) {
+        userService.qForDeleting(id);
+    }
+
 }

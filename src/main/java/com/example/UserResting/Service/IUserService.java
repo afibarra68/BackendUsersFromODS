@@ -6,16 +6,21 @@ import com.example.UserResting.Service.Dto.UserDTO;
 
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public interface IUserService {
 
-    public UserDTO create (UserDTO usersDTO);
+     UserDTO create (UserDTO usersDTO);
 
-    public Page<UserDTO> read(Integer pageSize, Integer pageNumber);
+     Page<UserDTO> read(Integer pageSize, Integer pageNumber);
 
-    public  UserDTO update (UserDTO userDTO);
+      UserDTO update (UserDTO userDTO);
 
-    public UserDTO getById(Integer idUser);
+     UserDTO getById(Integer idUser);
 
+     Page<UserDTO> queryUsers(String username, Integer pageSize, Integer pageNumber);
+
+     String qForDeleting(Integer id);
 
 }
 

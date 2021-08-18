@@ -6,13 +6,13 @@ import com.example.UserResting.Repository.UsersRepository;
 import com.example.UserResting.Service.Dto.UserDTO;
 import com.example.UserResting.Service.IUserService;
 import com.example.UserResting.Service.Transformer.UserTransformer;
-import com.example.UserResting.Service.error.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UsersServiceImplements implements IUserService {
@@ -39,13 +39,31 @@ public class UsersServiceImplements implements IUserService {
 
     @Override
     public UserDTO update(UserDTO userDTO) {
-        return null;
+        Users users = UserTransformer.getUsersFromUsersDTO(userDTO);
+        return (UserTransformer.getUsersDTOFromUsers(userRepo.save(users)));
     }
 
     @Override
     public UserDTO getById(Integer idUser) {
-        return null;
+        return null ;
     }
 
+    @Override
+    public Page<UserDTO> queryUsers(String username, Integer pageSize, Integer pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return this.userRepo
+                .findAllByNameContains(username, pageable)
+                .map(UserTransformer::getUsersDTOFromUsers);
+    }
 
+    @Override
+    public String qForDeleting(Integer id) {
+        userRepo.deleteById(id);
+        return "Completed";
+
+
+
+
+    }
 }
+
